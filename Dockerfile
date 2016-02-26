@@ -37,7 +37,8 @@ RUN echo root:pivotal | chpasswd \
 
 EXPOSE 5432 22
 
-VOLUME /gpdata
+# VOLUMES CANNOT BE DEFINED IN BASE IMAGE IF CHANGES WILL BE MADE UP THE LINE
+#VOLUME /gpdata
 # Set the default command to run when starting the container
 
 CMD echo "127.0.0.1 $(cat ~/orig_hostname)" >> /etc/hosts \
