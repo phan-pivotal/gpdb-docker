@@ -7,12 +7,13 @@ MAINTAINER dbaskette@pivotal.io
 
 COPY * /tmp/
 RUN echo root:pivotal | chpasswd \
+        && yum update -y \
         && yum install -y unzip which tar more util-linux-ng passwd openssh-clients openssh-server ed m4; yum clean all \
-        && unzip /tmp/greenplum-db-4.3.7.1-build-1-RHEL5-x86_64.zip -d /tmp/ \
-        && rm /tmp/greenplum-db-4.3.7.1-build-1-RHEL5-x86_64.zip \
-        && sed -i s/"more << EOF"/"cat << EOF"/g /tmp/greenplum-db-4.3.7.1-build-1-RHEL5-x86_64.bin \
-        && echo -e "yes\n\nyes\nyes\n" | /tmp/greenplum-db-4.3.7.1-build-1-RHEL5-x86_64.bin \
-        && rm /tmp/greenplum-db-4.3.7.1-build-1-RHEL5-x86_64.bin \
+        && unzip /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.zip -d /tmp/ \
+        && rm /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.zip \
+        && sed -i s/"more << EOF"/"cat << EOF"/g /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
+        && echo -e "yes\n\nyes\nyes\n" | /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
+        && rm /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
         && cat /tmp/sysctl.conf.add >> /etc/sysctl.conf \
         && cat /tmp/limits.conf.add >> /etc/security/limits.conf \
         && rm -f /tmp/*.add \
@@ -35,7 +36,7 @@ RUN echo root:pivotal | chpasswd \
         && su gpadmin -l -c "source /usr/local/greenplum-db/greenplum_path.sh;gpinitsystem -a -c  /tmp/gpinitsystem_singlenode -h /tmp/gpdb-hosts; exit 0 "\
         && su gpadmin -l -c "export MASTER_DATA_DIRECTORY=/gpdata/master/gpseg-1;source /usr/local/greenplum-db/greenplum_path.sh;psql -d template1 -c \"alter user gpadmin password 'pivotal'\"; createdb gpadmin;  exit 0"
 
-EXPOSE 5432 22
+EXPOSE 5432 22 40000 40001
 
 # VOLUMES CANNOT BE DEFINED IN BASE IMAGE IF CHANGES WILL BE MADE UP THE LINE
 #VOLUME /gpdata
