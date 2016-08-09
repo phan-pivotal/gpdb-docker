@@ -1,8 +1,8 @@
-# gpdb-docker
-Pivotal Greenplum Database Base Docker Image (4.3.7.1)
+# gptext-docker
+GPTEXT for Pivotal Greenplum Database Base Docker Image (4.3.7.1)
 
 # Building the Docker Image
-You will first need to download the Pivotal Greenplum Database 4.3.7.1 RHEL installer (.zip) located at https://network.pivotal.io/products/pivotal-gpdb and place it inside the docker working directory.
+You will first need to download the GPTEXT for Pivotal Greenplum Database 4.3.7.1 RHEL installer (.zip) located at https://network.pivotal.io/products/pivotal-gpdb and oracle jre 8 or above for linux x64 from //download.oracle.com/otn-pub/java/jdk/8u92-b14/jre-8u92-linux-x64.rpm ,and place them inside gptext directory .
 
 cd [docker working directory]
 

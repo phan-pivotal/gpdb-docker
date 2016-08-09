@@ -28,7 +28,10 @@ ENV JAVA_HOME /usr/java/jre1.8.0_92/ \
     LC_ALL=en_US.UTF-8
 RUN echo "export JAVA_HOME=/usr/java/jre1.8.0_92/" >> ~/.bashrc \
     && echo "export PATH=$JAVA_HOME/bin:$PATH" >> ~/.bashrc
-RUN service sshd start; su gpadmin -l -c "/usr/local/bin/run.sh"; su gpadmin -l -c 'echo -e "yes\n\nyes\n\yes\n" | /tmp/greenplum-text-2.0.0-rhel5_x86_64.bin -c /tmp/gptext_install_config'
+RUN service sshd start \
+    && su gpadmin -l -c "/usr/local/bin/run.sh" \
+    && su gpadmin -l -c 'echo -e "yes\n\nyes\n\yes\n" | /tmp/greenplum-text-2.0.0-rhel5_x86_64.bin -c /tmp/gptext_install_config' \
+    && su gpadmin -l -c 'source /usr/local/greenplum-text-2.0.0/greenplum-text_path.sh; zkManager start; gptext-installsql gpadmin'
 RUN rm /tmp/greenplum-text-2.0.0-rhel5_x86_64.bin
 
 EXPOSE 5432 22 40000 40001
@@ -38,6 +41,7 @@ EXPOSE 5432 22 40000 40001
 # Set the default command to run when starting the container
 
 CMD echo "127.0.0.1 $(cat ~/orig_hostname)" >> /etc/hosts \
+        && service sshd start \
         && su gpadmin -l -c "/usr/local/bin/run.sh" \
-        && su gpadmin -l -c "source /usr/local/greenplum-text-2.0.0/greenplum-text_path.sh; gptext-installsql gpadmin; gptext-start" \
+        && su gpadmin -l -c "source /usr/local/greenplum-text-2.0.0/greenplum-text_path.sh; zkManager start; gpadmin; gptext-start" \
         && /bin/bash
