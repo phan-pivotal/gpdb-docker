@@ -3,17 +3,21 @@
 #
 
 FROM centos:6.7
-MAINTAINER dbaskette@pivotal.io
+MAINTAINER sgao@pivotal.io
+
+ENV VERSION 4.3.9.0
+ENV ZIP_FILE_NAME /tmp/greenplum-db-${VERSION}-build-1-RHEL5-x86_64.zip
+ENV BIN_FILE_NAME /tmp/greenplum-db-${VERSION}-build-1-RHEL5-x86_64.bin
 
 COPY * /tmp/
 RUN echo root:pivotal | chpasswd \
         && yum update -y \
-        && yum install -y unzip which tar more util-linux-ng passwd openssh-clients openssh-server ed m4; yum clean all \
-        && unzip /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.zip -d /tmp/ \
-        && rm /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.zip \
-        && sed -i s/"more << EOF"/"cat << EOF"/g /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
-        && echo -e "yes\n\nyes\nyes\n" | /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
-        && rm /tmp/greenplum-db-4.3.8.2-build-1-RHEL5-x86_64.bin \
+        && yum install -y unzip which tar more util-linux-ng passwd openssh-clients openssh-server ed m4 perl; yum clean all \
+        && unzip $ZIP_FILE_NAME -d /tmp/ \
+        && rm $ZIP_FILE_NAME \
+        && sed -i s/"more << EOF"/"cat << EOF"/g $BIN_FILE_NAME \
+        && echo -e "yes\n\nyes\nyes\n" | $BIN_FILE_NAME \
+        && rm $BIN_FILE_NAME \
         && cat /tmp/sysctl.conf.add >> /etc/sysctl.conf \
         && cat /tmp/limits.conf.add >> /etc/security/limits.conf \
         && rm -f /tmp/*.add \
