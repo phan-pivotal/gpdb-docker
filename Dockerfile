@@ -20,6 +20,7 @@ RUN yum update -y; yum install -y nc lsof \
     && chown -R gpadmin: /data/primary \
     && mkdir -p /data/master \
     && chown -R gpadmin: /data/master 
+RUN yum install -y yum-plugin-ovl
 #RUN curl --insecure --junk-session-cookies --location --remote-name --silent --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jre-8u92-linux-x64.rpm
 RUN yum localinstall -y /tmp/jre-8u92-linux-x64.rpm && \
     rm /tmp/jre-8u92-linux-x64.rpm && \
