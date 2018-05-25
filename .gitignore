@@ -1,0 +1,8 @@
+# Mac General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+#APP
+*.zip
+*.bin

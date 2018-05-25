@@ -2,12 +2,12 @@
 #  Dockerfile for a GPDB SNE Sandbox Base Image
 #
 
-FROM centos:6.7
-MAINTAINER sgao@pivotal.io
+FROM centos:6
+MAINTAINER phan@pivotal.io forked from gaos1/gpdb-docker
 
-ENV VERSION 4.3.9.0
-ENV ZIP_FILE_NAME /tmp/greenplum-db-${VERSION}-build-1-RHEL5-x86_64.zip
-ENV BIN_FILE_NAME /tmp/greenplum-db-${VERSION}-build-1-RHEL5-x86_64.bin
+ENV VERSION 5.8.0
+ENV ZIP_FILE_NAME /tmp/greenplum-db-${VERSION}-rhel6-x86_64.zip
+ENV BIN_FILE_NAME /tmp/greenplum-db-${VERSION}-rhel6-x86_64.bin
 
 COPY * /tmp/
 RUN echo root:pivotal | chpasswd \
@@ -48,6 +48,6 @@ EXPOSE 5432 22 40000 40001
 
 CMD echo "127.0.0.1 $(cat ~/orig_hostname)" >> /etc/hosts \
         && service sshd start \
-#       && sysctl -p \
+#        && sysctl -p \
         && su gpadmin -l -c "/usr/local/bin/run.sh" \
         && /bin/bash
