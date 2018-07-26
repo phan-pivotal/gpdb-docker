@@ -5,14 +5,25 @@
 FROM centos:6
 MAINTAINER phan@pivotal.io forked from gaos1/gpdb-docker
 
-ENV VERSION 5.8.0
+## May be useful for gdb, not enabled yet.
+#cap_add:
+#    - SYS_PTRACE
+#security_opt:
+#    - apparmor:unconfined
+
+ENV VERSION 5.9.0
 ENV ZIP_FILE_NAME /tmp/greenplum-db-${VERSION}-rhel6-x86_64.zip
 ENV BIN_FILE_NAME /tmp/greenplum-db-${VERSION}-rhel6-x86_64.bin
+ENV GPDB_SRC_FILENAME /tmp/gpdb.tar.gz
 
 COPY * /tmp/
 RUN echo root:pivotal | chpasswd \
+        && sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Debuginfo.repo \
         && yum update -y \
-        && yum install -y unzip which tar more util-linux-ng passwd openssh-clients openssh-server ed m4 perl; yum clean all \
+        && yum install -y unzip which tar more util-linux-ng passwd openssh-clients openssh-server ed m4 perl krb5-workstation krb5-libs gdb libcgroup-tools git yum-utils tmux \
+        && debuginfo-install -y audit-libs libgcc nss-softokn-freebl pam zlib; yum clean all \
+        && tar -xzf $GPDB_SRC_FILENAME \
+        && rm $GPDB_SRC_FILENAME \
         && unzip $ZIP_FILE_NAME -d /tmp/ \
         && rm $ZIP_FILE_NAME \
         && sed -i s/"more << EOF"/"cat << EOF"/g $BIN_FILE_NAME \

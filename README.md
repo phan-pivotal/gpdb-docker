@@ -21,6 +21,9 @@ su - gpadmin
 
 psql
 
+# Using psql cli outside the Container
+psql -p 5432 -h localhost -U gpadmin postgres
+
 # Using pgadmin outside the Container
 Launch pgAdmin3
 
