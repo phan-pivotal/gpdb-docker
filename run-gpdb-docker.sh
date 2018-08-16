@@ -1,1 +1,2 @@
-docker run -i -p 5432:5432 --privileged  penghan/pub:gpdb-docker-5.9.0
+#You may git clone https://github.com/greenplum-db/gpdb.git ~/Documents/workspace/Infrastructure/Mine/src: and use "-v" to load them to docker
+docker run -i -p 5432:5432 --privileged --security-opt seccomp:unconfined -v ~/Documents/workspace/Infrastructure/Mine/src:/src penghan/pub:gpdb-5.9.0-centos6-gdb-gcc_6

@@ -1,2 +1,15 @@
-export MASTER_DATA_DIRECTORY=/gpdata/master/gpseg-1 
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+
+export MASTER_DATA_DIRECTORY=/gpdata/master/gpseg-1
 source /usr/local/greenplum-db/greenplum_path.sh
